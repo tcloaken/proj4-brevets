@@ -66,9 +66,12 @@ def _calc_times():
   """
   app.logger.debug("Got a JSON request");
   km = request.args.get('km', 0, type=int)
-  #FIXME: These probably aren't the right open and close times
-  open_time = acp_times.open_time(km, 200, arrow.now().isoformat)
-  close_time = acp_times.close_time(km, 200, arrow.now().isoformat)
+  start_time = request.args.get('start_time',"",type=str)
+  start_date = request.args.get('start_date',"",type=str)
+  brevet_dist = request.args.get('dist', 0,type=int)
+  start = arrow.get( start_date +" "+ start_time, 'YYYY-MM-DD HH:mm')
+  open_time = acp_times.open_time(km, dist, start)
+  close_time = acp_times.close_time(km, dist, start)
   result={ "open": open_time, "close": close_time }
   return jsonify(result=result)
 

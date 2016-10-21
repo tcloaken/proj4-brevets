@@ -6,8 +6,7 @@ following rules described at https://rusa.org/octime_alg.html
 and https://rusa.org/pages/rulesForRiders
 """
 import arrow
-prox = 0.10  # this is the percent amount of the total brevet_dist_km that the 
-             # last checkpoint can be off by before using special rule 
+             
 #  Note for CIS 322 Fall 2016:
 #  You MUST provide the following two functions
 #  with these signatures, so that I can write
@@ -16,6 +15,9 @@ prox = 0.10  # this is the percent amount of the total brevet_dist_km that the
 #  same arguments.  Arguments are explained in the
 #  javadoc comments. 
 #
+prox = 0.10  # this is the percent amount of the total brevet_dist_km that the 
+             # last checkpoint can be off by before using special rule 
+finish_close_200 = {"hours":13,"minute":30}
 brevet_distances = [200,300,400,600,1000]
 min_speeds = [15.0,15.0,15.0,11.428,13.333]
 max_speeds = [34.0,32.0,30.0,28.0,26.0]
@@ -38,10 +40,13 @@ def open_time( control_dist_km, brevet_dist_km, brevet_start_time ):
        An ISO 8601 format date string indicating the control open time.
        This will be in the same time zone as the brevet start time.
     """
+    
     is_approx = (control_dist_km >= brevet_dist_km and control_dist_km <= (brevet_dist_km+(prox*brevet_dist_km)))
     max_speed = max_speed_table[brevet_dist_km]
-    print ("ASDFJASLDKASDLKFNSALD")
-    print (max_speed)
+	
+    if(is_approx): 
+        control_dist_km = brevet_dist_km
+    
     if brevet_dist_km == 200:
         max_speed = 34.0
     elif brevet_dist_km == 300:
@@ -77,10 +82,11 @@ def close_time( control_dist_km, brevet_dist_km, brevet_start_time ):
        An ISO 8601 format date string indicating the control close time.
        This will be in the same time zone as the brevet start time.
     """	
-   
-    prox = ()
-    if brevet_dist_km == 200:
-        min_speed = 15.0
+    
+    is_approx = (control_dist_km >= brevet_dist_km and control_dist_km <= (brevet_dist_km+(prox*brevet_dist_km)))
+    min_speed = min_speed_table[brevet_dist_km]
+    if brevet_dist_km == 200 and is_approx:
+        return brevet_start_time.replace(hours=+finish_close_200["hours"], minute=+finish_close_200["minute"])
     elif brevet_dist_km == 300:
         min_speed = 15.0
         
