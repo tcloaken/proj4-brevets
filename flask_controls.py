@@ -64,12 +64,13 @@ def _calc_times():
   described at https://rusa.org/octime_alg.html.
   Expects one URL-encoded argument, the number of miles. 
   """
+  
   app.logger.debug("Got a JSON request");
   km = request.args.get('km', 0, type=int)
   start_time = request.args.get('start_time',"",type=str)
   start_date = request.args.get('start_date',"",type=str)
-  brevet_dist = request.args.get('dist', 0,type=int)
-  start = arrow.get( start_date +" "+ start_time, 'YYYY-MM-DD HH:mm')
+  dist = request.args.get('dist', 0,type=int)
+  start = arrow.get(start_date +" "+ start_time, 'YYYY-MM-DD HH:mm').isoformat()
   open_time = acp_times.open_time(km, dist, start)
   close_time = acp_times.close_time(km, dist, start)
   result={ "open": open_time, "close": close_time }

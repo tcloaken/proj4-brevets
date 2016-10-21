@@ -60,14 +60,14 @@ def open_time( control_dist_km, brevet_dist_km, brevet_start_time ):
         
     elif brevet_dist_km == 1000:
         max_speed = 26.0
-        
     
+    start_time = arrow.get(brevet_start_time)
     min_hour = control_dist_km/max_speed
     min_minute = int((min_hour%1)*60)
     min_hour = int(min_hour)
-    open_hour = brevet_start_time.replace(hours=+min_hour, minute=+min_minute)
+    open_hour = start_time.replace(hours=+min_hour, minute=+min_minute)
     
-    return open_hour
+    return open_hour.isoformat()
 
 def close_time( control_dist_km, brevet_dist_km, brevet_start_time ):
     """
@@ -99,11 +99,11 @@ def close_time( control_dist_km, brevet_dist_km, brevet_start_time ):
     elif brevet_dist_km == 1000:
         min_speed = 13.333
         
-	
+    start_time = arrow.get(brevet_start_time)
     max_hour = control_dist_km/min_speed
     max_minute = int((max_hour%1)*60)
     max_hour = int(max_hour)
-    close_hour = brevet_start_time.replace(hours=+max_hour, minute=+max_minute)
-    return close_hour
+    close_hour = start_time.replace(hours=+max_hour, minute=+max_minute)
+    return close_hour.isoformat()
 
 
