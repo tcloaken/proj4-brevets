@@ -36,7 +36,7 @@ def test_close_200():
     
 def test_open_1000():
     """
-    Is desired open times
+    Is desired open times for 1000km brevet
 	"""
     test_start_time = arrow.get('2016-11-21 16:00:00', 'YYYY-MM-DD HH:mm:ss')
     assert open_time(50,1000,test_start_time) == arrow.get('2016-11-21 17:28:00', 'YYYY-MM-DD HH:mm:ss').isoformat()
@@ -55,7 +55,7 @@ def test_open_1000():
 
 def test_close_1000():
     """
-    Is desired open times
+    Is desired close times for 1000km brevet
 	"""
     test_start_time = arrow.get('2016-11-21 16:00:00', 'YYYY-MM-DD HH:mm:ss')
     assert close_time(50,1000,test_start_time) == arrow.get('2016-11-21 19:20:00', 'YYYY-MM-DD HH:mm:ss').isoformat()
@@ -65,8 +65,8 @@ def test_close_1000():
     assert close_time(400,1000,test_start_time) == arrow.get('2016-11-22 18:40:00', 'YYYY-MM-DD HH:mm:ss').isoformat()
     assert close_time(450,1000,test_start_time) == arrow.get('2016-11-22 22:00:00', 'YYYY-MM-DD HH:mm:ss').isoformat()
     assert close_time(600,1000,test_start_time) == arrow.get('2016-11-23 08:00:00', 'YYYY-MM-DD HH:mm:ss').isoformat()
-    #assert close_time(790,1000,test_start_time) == arrow.get('2016-11-24 00:38:00', 'YYYY-MM-DD HH:mm:ss').isoformat()
-    assert close_time(890,1000,test_start_time) == arrow.get('2016-11-24 09:22:00', 'YYYY-MM-DD HH:mm:ss').isoformat()
+    assert close_time(790,1000,test_start_time) == arrow.get('2016-11-24 00:38:00', 'YYYY-MM-DD HH:mm:ss').isoformat()
+    assert close_time(890,1000,test_start_time) == arrow.get('2016-11-24 09:23:00', 'YYYY-MM-DD HH:mm:ss').isoformat()
     assert close_time(900,1000,test_start_time) == arrow.get('2016-11-24 10:15:00', 'YYYY-MM-DD HH:mm:ss').isoformat()
     assert close_time(1005,1000,test_start_time) == arrow.get('2016-11-24 19:00:00', 'YYYY-MM-DD HH:mm:ss').isoformat()
 
