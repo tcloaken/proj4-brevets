@@ -27,6 +27,28 @@ for i in range(len(brevet_distances)):
     max_speed_table[brevet_distances[i]] = max_speeds[i]
     min_speed_table[brevet_distances[i]] = min_speeds[i]
 
+def legs(amount,speed):
+    """
+    Args: 
+        amount : number, the control distance in km
+        speed: list,  min speeds or max speeds
+    Returns:  
+        number of hours to open or close control points
+    
+    """
+    print (amount)
+    i = 0
+    sum = 0
+    while amount > 200 and i < 3:
+        sum += 200/speed[i]
+        amount -= 200
+        i += 1
+    
+    sum += amount/speed[i]
+    print (sum)
+    print (round(sum,2))
+    return sum
+
 def open_time( control_dist_km, brevet_dist_km, brevet_start_time ):
     """
     Args:
@@ -44,25 +66,11 @@ def open_time( control_dist_km, brevet_dist_km, brevet_start_time ):
     is_approx = (control_dist_km >= brevet_dist_km and control_dist_km <= (brevet_dist_km+(prox*brevet_dist_km)))
     max_speed = max_speed_table[brevet_dist_km]
 	
-    if(is_approx): 
-        control_dist_km = brevet_dist_km
     
-    if brevet_dist_km == 200:
-        max_speed = 34.0
-    elif brevet_dist_km == 300:
-        max_speed = 32.0
-        
-    elif brevet_dist_km == 400:
-        max_speed = 30.0
-        
-    elif brevet_dist_km == 600:
-        max_speed = 28.0
-        
-    elif brevet_dist_km == 1000:
-        max_speed = 26.0
     
+   
     start_time = arrow.get(brevet_start_time)
-    min_hour = control_dist_km/max_speed
+    min_hour = legs(control_dist_km,max_speeds)
     min_minute = int((min_hour%1)*60)
     min_hour = int(min_hour)
     open_hour = start_time.replace(hours=+min_hour, minute=+min_minute)
@@ -82,25 +90,23 @@ def close_time( control_dist_km, brevet_dist_km, brevet_start_time ):
        An ISO 8601 format date string indicating the control close time.
        This will be in the same time zone as the brevet start time.
     """	
-    
+    start_time = arrow.get(brevet_start_time)
     is_approx = (control_dist_km >= brevet_dist_km and control_dist_km <= (brevet_dist_km+(prox*brevet_dist_km)))
     min_speed = min_speed_table[brevet_dist_km]
-    if brevet_dist_km == 200 and is_approx:
-        return brevet_start_time.replace(hours=+finish_close_200["hours"], minute=+finish_close_200["minute"])
-    elif brevet_dist_km == 300:
-        min_speed = 15.0
+   
+    
+    for times in brevet_distances:
+        if (is_approx) and (times == brevet_dist_km):
+            if brevet_dist_km == 200:
+                close_hour = start_time.replace(hours=+(finish_close_200["hours"]), minute=+(finish_close_200["minute"]))
+                return close_hour.isoformat()
+            else:
+                control_dist_km = brevet_dist_km
+    
+
         
-    elif brevet_dist_km == 400:
-        min_speed = 15.0
-        
-    elif brevet_dist_km == 600:
-        min_speed = 11.428
-        
-    elif brevet_dist_km == 1000:
-        min_speed = 13.333
-        
-    start_time = arrow.get(brevet_start_time)
-    max_hour = control_dist_km/min_speed
+
+    max_hour = legs(control_dist_km,min_speeds)
     max_minute = int((max_hour%1)*60)
     max_hour = int(max_hour)
     close_hour = start_time.replace(hours=+max_hour, minute=+max_minute)
